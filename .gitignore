@@ -52,3 +52,10 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Idea
+
+.idea*
+
+# Other 
+*.un~
