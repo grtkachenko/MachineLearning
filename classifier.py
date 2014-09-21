@@ -1,5 +1,5 @@
 from metrics import *
-from data import Data
+from math import *
 
 class Classifier:
     def __init__(self, k, train_data, metrics=euclidean):
@@ -16,6 +16,7 @@ class Classifier:
                 return point.class_id
             if not point.class_id in class_dict:
                 class_dict[point.class_id] = 0
-            class_dict[point.class_id] += 1 / (self.metrics(point, test_point) ** 1)
+            d = self.metrics(point, test_point)
+            class_dict[point.class_id] += 1 / (d ** (1/2))
 
         return max(class_dict, key=class_dict.get)
