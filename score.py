@@ -21,5 +21,6 @@ class Score:
     def measure(self):
         return 2 * self.precission() * self.recall() / (self.precission() + self.recall())
 
+
 def calc_score(classifier, test_data):
     return Score()
