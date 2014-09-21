@@ -13,14 +13,28 @@ class Score:
         return self
 
     def precission(self):
-        return self.TP / (self.TP + self.FP)
+        denom = self.TP + self.FP
+        if denom == 0:
+            return 0
+        return self.TP / denom
 
     def recall(self):
-        return self.TP / (self.TP + self.FN)
+        denom = (self.TP + self.FN)
+        if denom == 0:
+            return 0
+        return self.TP / denom
 
     def measure(self):
-        return 2 * self.precission() * self.recall() / (self.precission() + self.recall())
+        denom = self.precission() + self.precission()
+        if denom == 0:
+            return 0
+        return 2 * self.precission() * self.recall() / denom
 
 
 def calc_score(classifier, test_data):
+    # score = Score()
+    # for test in test_data:
+    #     supposed_id = classifier.get_class(test)
+    #     if test.class_id == supposed_id:
+    #         if (test.class_id)
     return Score()

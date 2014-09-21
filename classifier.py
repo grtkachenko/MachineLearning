@@ -1,5 +1,7 @@
+from metrics import *
+
 class Classifier:
-    def __init__(self, k, train_data, metrics):
+    def __init__(self, k, train_data, metrics=euclidean):
         self.k = k
         self.train_data = train_data
         self.metrics = metrics
