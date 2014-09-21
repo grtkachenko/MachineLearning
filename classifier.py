@@ -1,4 +1,5 @@
 from metrics import *
+from data import Data
 
 class Classifier:
     def __init__(self, k, train_data, metrics=euclidean):
@@ -7,7 +8,12 @@ class Classifier:
         self.metrics = metrics
 
     def get_class(self, test_point):
-        self.train_data.sorted(key=lambda point: self.metrics(point, test_point))
+        self.train_data.sort(key=lambda point: self.metrics(point, test_point))
         nearest_list = self.train_data[0:self.k]
-        return nearest_list[0].class_id
+        class_dict = dict()
+        for point in nearest_list:
+            if not point.class_id in class_dict:
+                class_dict[point.class_id] = 0
+            class_dict[point.class_id] += 1 / self.metrics(point, test_point)
 
+        return max(class_dict, key=class_dict.get)
