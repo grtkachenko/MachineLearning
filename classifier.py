@@ -12,8 +12,10 @@ class Classifier:
         nearest_list = self.train_data[0:self.k]
         class_dict = dict()
         for point in nearest_list:
+            if point == test_point:
+                return point.class_id
             if not point.class_id in class_dict:
                 class_dict[point.class_id] = 0
-            class_dict[point.class_id] += 1 / self.metrics(point, test_point)
+            class_dict[point.class_id] += 1 / (self.metrics(point, test_point) ** 1)
 
         return max(class_dict, key=class_dict.get)
