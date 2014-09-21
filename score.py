@@ -1,9 +1,9 @@
 class Score:
-    def __init__(self, TP=0, TN=0, FP=0,FN=0):
-        self.TP = TP
-        self.TN = TN
-        self.FP = FP
-        self.FN = FN
+    def __init__(self, tp=0, tn=0, fp=0, fn=0):
+        self.TP = tp
+        self.TN = tn
+        self.FP = fp
+        self.FN = fn
 
     def add(self, other):
         self.TP += other.TP
@@ -20,3 +20,6 @@ class Score:
 
     def measure(self):
         return 2 * self.precission() * self.recall() / (self.precission() + self.recall())
+
+def calc_score(classifier, test_data):
+    return Score()
