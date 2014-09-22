@@ -28,7 +28,7 @@ def normalize(chips, coord_id):
 with open('chips.txt', 'r') as f:
     chips = [Data(*line.split(',')) for line in f.readlines()]
     chips = normalize(normalize(chips, 0), 1)
-        shuffle(chips)
+    shuffle(chips)
     count_to_test = len(chips)//5
     test = chips[:count_to_test]
     chips = chips[count_to_test:]
