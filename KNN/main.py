@@ -34,5 +34,5 @@ with open('chips.txt', 'r') as f:
     chips = chips[count_to_test:]
     k = optimal_k(chips)
     classifier = Classifier(k, chips)
-    result = calc_score(classifier, test)
+    result = calc_score(classifier, chips + test)
     print('optimal k = {}, measure = {}'.format(k, result.measure()))
