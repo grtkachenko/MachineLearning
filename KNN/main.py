@@ -1,12 +1,12 @@
 from KNN.data import Data
-from common.validator import *
-
+from KNN.knn_classifier import *
+from common.cross_validator import *
 
 def optimal_k(chips):
     result = 0
     result_k = 1
     for k in range(1, min(20, len(chips))):
-        cur = validate(chips, k)
+        cur = cross_validate(KnnClassifier(k), chips)
         print('with k = {} : result = {}'.format(k, cur.measure()))
         if cur.measure() > result:
             result = cur.measure()
@@ -33,6 +33,7 @@ with open('chips.txt', 'r') as f:
     test = chips[:count_to_test]
     chips = chips[count_to_test:]
     k = optimal_k(chips)
-    classifier = KnnClassifier(k, chips)
-    result = calc_score(classifier, chips + test)
+    classifier = KnnClassifier(k)
+    classifier.learn(chips)
+    result = calc_score(classifier, test)
     print('optimal k = {}, measure = {}'.format(k, result.measure()))

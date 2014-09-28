@@ -1,11 +1,13 @@
 from common.metrics import *
-from data import Data
+
 
 class KnnClassifier:
-    def __init__(self, k, train_data, metrics=euclidean):
+    def __init__(self, k, metrics=euclidean):
         self.k = k
-        self.train_data = train_data
         self.metrics = metrics
+
+    def learn(self, train_data):
+        self.train_data = train_data
 
     def get_class(self, test_point):
         self.train_data.sort(key=lambda point: self.metrics(point, test_point))
