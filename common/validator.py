@@ -1,6 +1,7 @@
 from random import shuffle
+
 from common.score import *
-from common.knn_classifier import KnnClassifier
+from KNN.knn_classifier import KnnClassifier
 
 
 def rotate(l,n):

@@ -18,7 +18,7 @@ class BayesClassifier:
         self.prob_classes = [spam_size / len(train_data), (len(train_data) - spam_size) / len(train_data)]
 
     def get_class(self, test_letter):
-        cur_prob_classes = {0 : self.prob_classes[0], 1 : self.prob_classes[1]}
+        cur_prob_classes = {0: self.prob_classes[0], 1: self.prob_classes[1]}
         for word in test_letter.subject + test_letter.body:
             for i in range(0, 2):
                 cur_prob_classes[i] *= self.spam_word_prob[word][i]
