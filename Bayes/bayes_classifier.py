@@ -1,3 +1,5 @@
+from math import log
+
 class BayesClassifier:
     # 0 - spam, 1 - not spam
 
@@ -17,10 +19,11 @@ class BayesClassifier:
         self.prob_classes = [class_size[i] / len(train_data) for i in range(2)]
 
     def get_class(self, test_letter):
-        cur_prob_classes = [self.prob_classes[0], self.prob_classes[1]]
+        cur_prob_classes = [0., 0.]
         for word in test_letter.subject + test_letter.body:
             for i in range(2):
                 if word in self.word_prob:
-                    cur_prob_classes[i] *= self.word_prob[word][i]
+                    self.word_prob[word][i] = self.word_prob[word][i] * 0.9998 + 0.0001
+                    cur_prob_classes[i] += -log(self.word_prob[word][i])
 
-        return 0 if cur_prob_classes[0] > cur_prob_classes[1] else 1
+        return 0 if cur_prob_classes[0] < cur_prob_classes[1] else 1
