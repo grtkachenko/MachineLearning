@@ -1,4 +1,4 @@
-from data import Data
+from KNN.data import Data
 from common.validator import *
 
 
