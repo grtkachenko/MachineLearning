@@ -1,7 +1,7 @@
-from metrics import *
+from common.metrics import *
 from data import Data
 
-class Classifier:
+class KnnClassifier:
     def __init__(self, k, train_data, metrics=euclidean):
         self.k = k
         self.train_data = train_data

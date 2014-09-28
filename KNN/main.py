@@ -1,5 +1,5 @@
 from data import Data
-from validator import *
+from common.validator import *
 
 
 def optimal_k(chips):
@@ -33,6 +33,6 @@ with open('chips.txt', 'r') as f:
     test = chips[:count_to_test]
     chips = chips[count_to_test:]
     k = optimal_k(chips)
-    classifier = Classifier(k, chips)
+    classifier = KnnClassifier(k, chips)
     result = calc_score(classifier, chips + test)
     print('optimal k = {}, measure = {}'.format(k, result.measure()))
