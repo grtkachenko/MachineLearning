@@ -11,6 +11,8 @@ for data_part in os.listdir(test_dir):
                 lines = [line for line in f.readlines()]
                 subject = [int(number) for number in lines[0].split()[1:]]
                 body = [int(number) for number in lines[2].split()]
-                data.append(Message(subject, body, "spmsg" in file))
+                msgs.append(Message(subject, body, "spmsg" in file))
+        data.append(msgs)
 for test in data:
-    print(test)
+    for msg in test:
+        print(msg)
