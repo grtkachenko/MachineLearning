@@ -1,4 +1,4 @@
-class Data:
+class Point:
     def __init__(self, x, y, class_id):
         self.x = float(x)
         self.y = float(y)
