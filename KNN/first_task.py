@@ -26,7 +26,7 @@ with open('chips.txt', 'r') as f:
     x_min, x_max = -1.5, 1.5
     y_min, y_max = -1.5, 1.5
 
-    h = 0.05
+    h = 0.025
     xx, yy = np.arange(x_min, x_max, h), np.arange(y_min, y_max, h)
     mesh_pts = []
     mesh_y = []

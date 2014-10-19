@@ -11,19 +11,27 @@ class SVMClassifier:
 
     def learn(self, train_data):
         self.train_data = train_data
-        opt = Smo(1, 0.5, 5, self.kernel)
+        opt = Smo(2, 0, 5, self.kernel)
         self.alpha, self.w0 = opt.minimize(train_data)
-        self.w = Point(0, 0)
+
+    def get_w(self):
+        w = Point(0, 0)
         lam, x = self.alpha, self.train_data
         for i in range(len(x)):
             y = 1 if x[i].class_id == 1 else -1
-            self.w += x[i].mul_scalar(lam[i] * y)
+            w += x[i].mul_scalar(lam[i] * y)
+        return w
 
     def get_class(self, test_point):
-        res = self.kernel(self.w, test_point) + self.w0
+        res = 0
+        lam, x = self.alpha, self.train_data
+        for i in range(len(x)):
+            y = 1 if x[i].class_id == 1 else -1
+            res += self.kernel(x[i], test_point) * lam[i] * y
+        res += self.w0
         return 1 if res > 0 else 0
 
     def get_line(self):
-        w = self.w
+        w = self.get_w()
         k, b = -w.x/w.y, -self.w0/w.y
         return k, b
