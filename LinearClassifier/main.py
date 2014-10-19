@@ -14,3 +14,4 @@ with open('LinearDataset', 'r') as f:
     result = calc_score(classifier, test_data)
     print('measure = {}'.format(result.measure()))
     print('k = {}, b = {}'.format(classifier.get_k(), classifier.get_b()))
+
