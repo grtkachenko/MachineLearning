@@ -29,8 +29,8 @@ def smo(C, tol, max_passes, pts, kernel=dot):
                 a[j] = min(h, max(l, a[j]))
                 if abs(a[j] - a_old_j) < 1e-5:
                     continue
-                a[i] += a[i].class_id * a[j].class_id * (a_old_j -  a[j])
-                b_help = b - a[i].class_id * (a[i] - a_old_i) * kernel(pts[i], pts[i]) - a[j].class_id * (a[j] - a_old_j) * kernel(pts[j], pts[j])
+                a[i] += pts[i].class_id * pts[j].class_id * (a_old_j -  a[j])
+                b_help = b - pts[i].class_id * (a[i] - a_old_i) * kernel(pts[i], pts[i]) - pts[j].class_id * (a[j] - a_old_j) * kernel(pts[j], pts[j])
                 b1, b2 = b_help - err_i, b_help - err_j
                 if 0 < a[i] < C:
                     b = b1
@@ -48,7 +48,7 @@ def smo(C, tol, max_passes, pts, kernel=dot):
 
 
 def calc_n(x_i, x_j, kernel):
-    return 2 * kernel(x_i, x_j) - kernel(x_i, x_j) - kernel(x_j, x_j)
+    return 2 * kernel(x_i, x_j) - kernel(x_i, x_i) - kernel(x_j, x_j)
 
 
 def calc_e(x, a, b, pts, kernel):
