@@ -9,3 +9,4 @@ with open('LinearDataset', 'r') as f:
     data = normalize(normalize(data, 0), 1)
 
 a, b = smo(1, 1, 1, data)
+print(a)
