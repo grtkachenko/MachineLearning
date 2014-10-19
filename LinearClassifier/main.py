@@ -13,5 +13,5 @@ with open('LinearDataset', 'r') as f:
     classifier.learn(train_data)
     result = calc_score(classifier, test_data)
     print('measure = {}'.format(result.measure()))
-    print('k = {}, b = {}'.format(classifier.get_k(), classifier.get_b()))
-
+    k, b = classifier.get_line()
+    print('k = {}, b = {}'.format(k, b))
