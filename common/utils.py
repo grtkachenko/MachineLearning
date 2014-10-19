@@ -13,3 +13,11 @@ def normalize(chips, coord_id):
 def train_test_split(pts, ratio):
     n = int(len(pts) * ratio)
     return pts[:n], pts[n:]
+
+
+def coords_arrays(pts):
+    x, y = [], []
+    for p in pts:
+        x.append(p.x)
+        y.append(p.y)
+    return x, y

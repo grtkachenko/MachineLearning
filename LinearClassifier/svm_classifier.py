@@ -11,11 +11,12 @@ class SVMClassifier:
 
     def learn(self, train_data):
         self.train_data = train_data
-        self.alpha, self.w0 = smo(1, 0, 10, train_data, self.kernel)
+        self.alpha, self.w0 = smo(2, 0.1, 5, train_data, self.kernel)
         self.w = Point(0, 0)
         lam, x = self.alpha, self.train_data
         for i in range(len(x)):
-            self.w += x[i].mul_scalar(lam[i] * x[i].class_id)
+            y = 1 if x[i].class_id == 1 else -1
+            self.w += x[i].mul_scalar(lam[i] * y)
 
     def get_class(self, test_point):
         res = self.kernel(self.w, test_point) + self.w0

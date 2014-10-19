@@ -22,6 +22,4 @@ class Point:
         return self
 
     def mul_scalar(self, val):
-        self.x *= val
-        self.y *= val
-        return self
+        return Point(self.x * val, self.y * val)
