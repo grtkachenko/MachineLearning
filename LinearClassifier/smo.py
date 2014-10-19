@@ -20,17 +20,17 @@ class Smo:
             num_changes_alpha = 0
             for i in range(len(pts)):
                 cur_p = pts[i]
-                err_i = self.calc_e(cur_p, a, b, pts)
+                err_i = self.__calc_e__(cur_p, a, b, pts)
                 if (cur_p.class_id * err_i < -self.tol and a[i] < self.c) or (cur_p.class_id * err_i > self.tol and a[i] > 0):
                     j = i
                     while i == j:
                         j = randint(0, len(pts) - 1)
-                    err_j = self.calc_e(pts[j], a, b, pts)
+                    err_j = self.__calc_e__(pts[j], a, b, pts)
                     a_old_i, a_old_j = a[i], a[j]
-                    l, h = self.calc_lh(i, j, pts, a)
+                    l, h = self.__calc_lh__(i, j, pts, a)
                     if l == h:
                         continue
-                    n = self.calc_n(pts[i], pts[j])
+                    n = self.__calc_n__(pts[i], pts[j])
                     if n >= 0:
                         continue
     
@@ -58,19 +58,19 @@ class Smo:
 
         return a, b
     
-    def calc_n(self, x_i, x_j):
+    def __calc_n__(self, x_i, x_j):
         return 2 * self.kernel(x_i, x_j) - self.kernel(x_i, x_i) - self.kernel(x_j, x_j)
     
-    def calc_e(self, x, a, b, pts):
-        return self.calc_f(x, a, b, pts) - x.class_id
+    def __calc_e__(self, x, a, b, pts):
+        return self.__calc_f__(x, a, b, pts) - x.class_id
     
-    def calc_lh(self, i, j, pts, a):
+    def __calc_lh__(self, i, j, pts, a):
         if pts[i].class_id != pts[j].class_id:
             return max(0, a[j] - a[i]), min(self.c, self.c + a[j] - a[i])
         else:
             return max(0, a[i] + a[j] - self.c), min(self.c, a[i] + a[j])
     
-    def calc_f(self, x, a, b, pts):
+    def __calc_f__(self, x, a, b, pts):
         res = b
         for i in range(len(a)):
             res += a[i] * pts[i].class_id * self.kernel(x, pts[i])
