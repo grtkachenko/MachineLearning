@@ -11,5 +11,5 @@ def normalize(chips, coord_id):
 
 
 def train_test_split(pts, ratio):
-    n = len(pts) * ratio
+    n = int(len(pts) * ratio)
     return pts[:n], pts[n:]

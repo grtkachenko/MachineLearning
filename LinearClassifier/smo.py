@@ -2,8 +2,9 @@ import numpy as np
 from common.kernels import dot
 from random import randint
 
+
 def smo(C, tol, max_passes, pts, kernel=dot):
-    a = np.array(pts)
+    a = [0] * len(pts)
     b = 0
     passes = 0
     while passes < max_passes:
@@ -15,12 +16,12 @@ def smo(C, tol, max_passes, pts, kernel=dot):
                 j = i
                 while i == j:
                     j = randint(0, len(pts) - 1)
-                err_j = calc_e(pts[j], a, b, pts)
+                err_j = calc_e(pts[j], a, b, pts, kernel)
                 a_old_i, a_old_j = a[i], a[j]
                 l, h = calc_lh(i, j, pts, a, C)
                 if l == h:
                     continue
-                n = calc_n()
+                n = calc_n(pts[i], pts[j], kernel)
                 if n >= 0:
                     continue
 
@@ -31,9 +32,9 @@ def smo(C, tol, max_passes, pts, kernel=dot):
                 a[i] += a[i].class_id * a[j].class_id * (a_old_j -  a[j])
                 b_help = b - a[i].class_id * (a[i] - a_old_i) * kernel(pts[i], pts[i]) - a[j].class_id * (a[j] - a_old_j) * kernel(pts[j], pts[j])
                 b1, b2 = b_help - err_i, b_help - err_j
-                if 0 < a[i] and a[i] < C:
+                if 0 < a[i] < C:
                     b = b1
-                elif 0 < a[j] and a[j] < C:
+                elif 0 < a[j] < C:
                     b = b2
                 else:
                     b = (b1 + b2) / 2
@@ -58,7 +59,7 @@ def calc_lh(i, j, pts, a, c):
     if pts[i].class_id != pts[j].class_id:
         return max(0, a[j] - a[i]), min(c, c + a[j] - a[i])
     else:
-        return max(0, a[i] + a[j] - c), min(c, a[i] + a[j]);
+        return max(0, a[i] + a[j] - c), min(c, a[i] + a[j])
 
 
 def calc_f(x, a, b, pts, kernel):
