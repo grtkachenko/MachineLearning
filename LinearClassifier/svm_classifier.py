@@ -19,7 +19,7 @@ class SVMClassifier:
 
     def get_class(self, test_point):
         res = self.kernel(self.w, test_point) + self.w0
-        1 if res > 0 else 0
+        return 1 if res > 0 else 0
 
     def get_line(self):
         w = self.w
