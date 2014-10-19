@@ -1,6 +1,6 @@
 from common.kernels import *
 from common.point import Point
-from smo import smo
+from smo import Smo
 
 
 class SVMClassifier:
@@ -11,7 +11,8 @@ class SVMClassifier:
 
     def learn(self, train_data):
         self.train_data = train_data
-        self.alpha, self.w0 = smo(2, 0.1, 5, train_data, self.kernel)
+        opt = Smo(1, 0.5, 5, self.kernel)
+        self.alpha, self.w0 = opt.minimize(train_data)
         self.w = Point(0, 0)
         lam, x = self.alpha, self.train_data
         for i in range(len(x)):

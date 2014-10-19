@@ -24,7 +24,7 @@ with open('LinearDataset', 'r') as f:
     result = calc_score(classifier, test_data)
     print('measure = {}'.format(result.measure()))
 
-    figure = plt.figure(figsize=(14, 5))
+    figure = plt.figure(figsize=(14, 14))
 
     x_min, x_max = -10, 10
     y_min, y_max = -10, 10
@@ -33,7 +33,7 @@ with open('LinearDataset', 'r') as f:
     cm = plt.cm.RdBu
     cm_bright = ListedColormap(['#FF0000', '#0000FF'])
     cm_bright_test = ListedColormap(['#00FF00', '#FFFFFF'])
-    ax = plt.subplot(1, 2, 1)
+    ax = plt.subplot()
 
     ax.scatter(*coords_arrays(train_data), c=train_y, cmap=cm_bright)
     # and testing points
