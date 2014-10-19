@@ -8,3 +8,8 @@ def normalize(chips, coord_id):
             chip.y /= max_chip
         return chip
     return list(map(chip_fun, chips))
+
+
+def train_test_split(pts, ratio):
+    n = len(pts) * ratio
+    return pts[:n], pts[n:]

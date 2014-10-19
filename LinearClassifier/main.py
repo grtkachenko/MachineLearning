@@ -1,12 +1,16 @@
 from common.point import Point
-from common.utils import normalize
-from smo import smo
-
-data = []
+from svm_classifier import SVMClassifier
+from common.score import *
+from common.utils import *
+from random import *
 
 with open('LinearDataset', 'r') as f:
     data = [Point(*(line.split(' '))) for line in f.readlines()]
     data = normalize(normalize(data, 0), 1)
-
-a, b = smo(1, 1, 1, data)
-print(a)
+    shuffle(data)
+    train_data, test_data = train_test_split(data, 0.8)
+    classifier = SVMClassifier()
+    classifier.learn(train_data)
+    result = calc_score(classifier, test_data)
+    print('measure = {}'.format(result.measure()))
+    print('k = {}, b = {}'.format(classifier.get_k(), classifier.get_b()))
