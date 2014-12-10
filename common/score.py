@@ -31,17 +31,18 @@ class Score:
         return 2 * self.precission() * self.recall() / denom
 
 
-def calc_score(classifier, test_data):
+def calc_score(classifier, test_data, get_class_id=lambda x: x.class_id):
     score = Score()
     for test in test_data:
         supposed_id = classifier.get_class(test)
-        if test.class_id == supposed_id:
-            if test.class_id == 1:
+        class_id = get_class_id(test)
+        if class_id == supposed_id:
+            if class_id == 1:
                 score.TP += 1
             else:
                 score.TN += 1
         else:
-            if test.class_id == 1:
+            if class_id == 1:
                 score.FP += 1
             else:
                 score.FN += 1
