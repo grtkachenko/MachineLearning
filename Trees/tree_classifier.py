@@ -14,10 +14,6 @@ class TreeClassifier:
 
     @staticmethod
     def id3(data, height):
-        if height >= 5:
-            pos_tests, neg_tests = TreeClassifier.divide_list(data, lambda x: x[1] == 1)
-            return Node(True, class_id=1 if len(pos_tests) > len(neg_tests) else -1)
-
         pos_tests, neg_tests = TreeClassifier.divide_list(data, lambda x: x[1] == 1)
 
         if len(pos_tests) == len(data):
@@ -25,11 +21,23 @@ class TreeClassifier:
         if len(neg_tests) == len(data):
             return Node(True, class_id=-1)
 
+        max_pred_val = cur_val = 0
+        max_gain, max_feature_num = TreeClassifier.get_max_predicate(data, len(data[0][0]), cur_val)
+        values_to_check = [20, 40, 80, 160, 300, 700]
+        for i in range(0, 3):
+            values_to_check.append(randint(0, 100))
+        for i in range(0, 3):
+            values_to_check.append(randint(100, 600))
 
-        cur_val = randint(0, 900)
-        feature_num = max(range(0, len(data[0][0])), key=lambda x: TreeClassifier.gain(data, lambda y: y[0][x] > cur_val))
-        predicate = lambda x: x[0][feature_num] > 0
-        predicate_info = str(feature_num) + ' > 0'
+
+        for cur_val in values_to_check:
+            cur_gain, cur_feature_num = TreeClassifier.get_max_predicate(data, len(data[0][0]), cur_val)
+            print(cur_gain, cur_val)
+            if cur_gain > max_gain:
+                max_gain, max_feature_num, max_pred_val = cur_gain, cur_feature_num, cur_val
+        print('Optimal gain {} and predicate feature{} > {} ; Height = {}'.format(max_gain, max_feature_num, max_pred_val, height))
+        predicate = lambda x: x[0][max_feature_num] > max_pred_val
+        predicate_info = str(max_feature_num) + ' > ' + str(max_pred_val)
 
         left_tests, right_tests = TreeClassifier.divide_list(data, predicate)
         res = Node(False, f=predicate, predicate_info=predicate_info)
@@ -38,24 +46,30 @@ class TreeClassifier:
         return res
 
     @staticmethod
+    def get_max_predicate(data, total_feature_num, pred_value):
+        condition = lambda x: TreeClassifier.gain(data, lambda y: y[0][x] > pred_value)
+        max_feature_num = max(range(0, total_feature_num), key=condition)
+        return condition(max_feature_num), max_feature_num
+
+    @staticmethod
     def divide_list(data, condition):
         pos = filter(lambda x: condition(x), data)
         neg = filter(lambda x: not condition(x), data)
         return list(pos), list(neg)
 
     @staticmethod
-    def entropy(data, prop):
-        m, n = len(TreeClassifier.divide_list(data, prop)[0]), len(data)
-        n += 1
-        m += 1
-        a, b = m / n + 0.0001, (n - m) / n + 0.0001
+    def entropy(data):
+        m, n = len(TreeClassifier.divide_list(data, lambda x: x[1] == 1)[0]), len(data)
+        if m == 0 or n == m or n == 0:
+            return 0
+        a, b = m / n, (n - m) / n
         return - a * log2(a) - b * log2(b)
 
     @staticmethod
     def gain(data, prop):
         left, right = TreeClassifier.divide_list(data, prop)
-        return TreeClassifier.entropy(data, prop) - TreeClassifier.entropy(left, prop) * len(left) / len(data) - \
-               TreeClassifier.entropy(right, prop) * len(right) / len(data)
+        return TreeClassifier.entropy(data) - TreeClassifier.entropy(left) * len(left) / len(data) - \
+               TreeClassifier.entropy(right) * len(right) / len(data)
 
     def get_class(self, test_value):
         cur_node = self.tree
