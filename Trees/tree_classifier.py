@@ -10,7 +10,6 @@ class TreeClassifier:
     def learn(self, train_data):
         self.tree = TreeClassifier.id3(train_data, 0)
 
-
     @staticmethod
     def id3(data, height):
         if height >= 3:
@@ -23,10 +22,13 @@ class TreeClassifier:
         if len(neg_tests) == len(data):
             return Node(True, class_id=-1)
 
-        predicate = lambda x: x[0][1] > 30
+        # TODO: replace with correct predicate selection
+        feature_num = randint(0, len(data[0][0]) - 1)
+        predicate = lambda x: x[0][feature_num] > 30
+        predicate_info = str(feature_num) + ' > 30'
 
         left_tests, right_tests = TreeClassifier.divide_list(data, predicate)
-        res = Node(False, f=predicate)
+        res = Node(False, f=predicate, predicate_info=predicate_info)
         res.set_left(TreeClassifier.id3(left_tests, height + 1))
         res.set_right(TreeClassifier.id3(right_tests, height + 1))
         return res

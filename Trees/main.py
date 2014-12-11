@@ -20,7 +20,3 @@ classifier = TreeClassifier()
 classifier.learn(read_data("./test", "arcene_train"))
 result = calc_score(classifier, read_data("./test", "arcene_valid"), get_class_id=lambda x: x[1])
 print(result.measure())
-
-
-
-
