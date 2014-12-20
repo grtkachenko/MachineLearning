@@ -15,8 +15,8 @@ class TreeClassifier:
     @staticmethod
     def id3(data, height):
         pos_tests, neg_tests = TreeClassifier.divide_list(data, lambda x: x[1] == 1)
-        if height >= 4:
-            return Node(True, class_id=1 if len(pos_tests) > len(neg_tests) else -1)
+        # if height >= 4:
+        #     return Node(True, class_id=1 if len(pos_tests) > len(neg_tests) else -1)
 
         if len(pos_tests) == len(data):
             return Node(True, class_id=1)
@@ -25,7 +25,7 @@ class TreeClassifier:
 
         max_pred_val = cur_val = 0
         max_gain, max_feature_num = TreeClassifier.get_max_predicate(data, len(data[0][0]), cur_val)
-        values_to_check = [20, 45, 80, 160, 300, 700]
+        values_to_check = [1, 3, 9, 20, 45, 80, 160, 300, 700]
         for i in range(0, 3):
             values_to_check.append(randint(0, 100))
         for i in range(0, 3):
