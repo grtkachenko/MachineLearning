@@ -48,7 +48,25 @@ class TreeClassifier:
         return res
 
     @staticmethod
+    def get_entropy_by_feature(data, total_feature_num):
+        entropy_by_feature = {}
+        for i in range(total_feature_num):
+            value_cnt = {}
+            for x in data:
+                if x[0][i] not in value_cnt:
+                    value_cnt[x[0][i]] = 1
+                else:
+                    value_cnt[x[0][i]] += 1
+            ent = 0.0
+            for key, value in value_cnt.items():
+                a = value / len(data)
+                ent += -a * log2(a)
+            entropy_by_feature[i] = ent
+        return entropy_by_feature
+
+    @staticmethod
     def get_max_predicate(data, total_feature_num, pred_value):
+        # entropy_by_feature = TreeClassifier.get_entropy_by_feature(data, total_feature_num)
         condition = lambda x: TreeClassifier.gain(data, lambda y: y[0][x] > pred_value)
         max_feature_num = max(range(0, total_feature_num), key=condition)
         return condition(max_feature_num), max_feature_num
@@ -74,8 +92,10 @@ class TreeClassifier:
                TreeClassifier.entropy(right) * len(right) / len(data)
 
     @staticmethod
-    def gain_ratio(data, prop):
-        return TreeClassifier.gain(data, prop) / TreeClassifier.entropy(data)
+    def gain_ratio(data, prop, feature_entropy):
+        if feature_entropy == 0:
+            return 0
+        return TreeClassifier.gain(data, prop) / feature_entropy
 
     @staticmethod
     def gini_set(data):
