@@ -25,11 +25,11 @@ class TreeClassifier:
 
         max_pred_val = cur_val = 0
         max_gain, max_feature_num = TreeClassifier.get_max_predicate(data, len(data[0][0]), cur_val)
-        values_to_check = [20, 45, 80, 160, 300, 700]
-        for i in range(0, 3):
+        values_to_check = [0]
+        for i in range(11):
             values_to_check.append(randint(0, 100))
-        for i in range(0, 3):
-            values_to_check.append(randint(100, 600))
+        for i in range(4):
+            values_to_check.append(randint(100, 900))
 
 
         for cur_val in values_to_check:
