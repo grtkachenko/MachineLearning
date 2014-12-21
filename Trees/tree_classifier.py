@@ -15,8 +15,8 @@ class TreeClassifier:
     @staticmethod
     def id3(data, height):
         pos_tests, neg_tests = TreeClassifier.divide_list(data, lambda x: x[1] == 1)
-        if height >= 4:
-            return Node(True, class_id=1 if len(pos_tests) > len(neg_tests) else -1)
+        # if height >= 3:
+        #     return Node(True, class_id=1 if len(pos_tests) > len(neg_tests) else -1)
 
         if len(pos_tests) == len(data):
             return Node(True, class_id=1)
@@ -72,6 +72,23 @@ class TreeClassifier:
         left, right = TreeClassifier.divide_list(data, prop)
         return TreeClassifier.entropy(data) - TreeClassifier.entropy(left) * len(left) / len(data) - \
                TreeClassifier.entropy(right) * len(right) / len(data)
+
+    @staticmethod
+    def gain_ratio(data, prop):
+        return TreeClassifier.gain(data, prop) / TreeClassifier.entropy(data)
+
+    @staticmethod
+    def gini_set(data):
+        m, n = len(TreeClassifier.divide_list(data, lambda x: x[1] == 1)[0]), len(data)
+        if n == 0:
+            return 0
+        return 1 - (m / n) ** 2 - ((n - m) / n) ** 2
+
+    @staticmethod
+    def gini(data, prop):
+        left, right = TreeClassifier.divide_list(data, prop)
+        return TreeClassifier.gini_set(data) - TreeClassifier.gini_set(left) * len(left) / len(data) - \
+               TreeClassifier.gini_set(right) * len(right) / len(data)
 
     def get_class(self, test_value):
         cur_node = self.tree
